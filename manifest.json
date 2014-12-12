@@ -1,13 +1,10 @@
 { "manifest_version": 2
 , "name": "Github Tweaks."
-, "version": "0.0.2"
-, "description": "Make the issues on a github issues page open in a new tab"
+, "version": "0.0.3"
+, "description": "Make the issues on a github issues page open in a new tab."
 , "content_scripts":
   [ { "matches":
-      [ "https://github.com/*/issues?*"
-      , "https://github.com/*/issues"
-      , "https://github.com/*/pulls?*"
-      , "https://github.com/*/pulls"
+      [ "https://github.com/*"
       ]
     , "js":
       [ "github-issues-opener.js"

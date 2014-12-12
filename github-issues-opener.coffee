@@ -6,7 +6,8 @@ config =
   childList: true
   subtree: true
 
-regex = new RegExp("/(issues|pull)/[0-9]")
+paths = new RegExp('/(issues|pull)(\\?|$\)')
+regex = new RegExp('/(issues|pull)/[0-9]')
 
 foundLink = (n) ->
   href = n.getAttribute('href')
@@ -25,9 +26,9 @@ modifyLinks = (rootNode) ->
 observer = new MutationObserver((mutations) ->
   mutations.some((mutation) ->
     if mutation.addedNodes
-      [].slice.call(mutation.addedNodes).forEach((node) -> modifyLinks(node))
+      if window.location.pathname.search(paths) != -1
+        [].slice.call(mutation.addedNodes).forEach((node) -> modifyLinks(node))
   )
 )
 
 observer.observe(document.body, config)
-# modifyLinks(document.body)
