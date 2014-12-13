@@ -1,9 +1,13 @@
 # Use cson2json from cson-cli (npm) to convert this (Emacs does it for me).
 manifest_version: 2
 name: "Github Tweaks."
-version: "0.0.3"
+version: "0.0.4"
 description: "Make the issues on a github issues page open in a new tab."
 content_scripts: [
   matches: ["https://github.com/*"]
   js: ["github-issues-opener.js"]
 ]
+icons:
+  16: "icon16.png"
+  48: "icon48.png"
+  128: "icon128.png"
