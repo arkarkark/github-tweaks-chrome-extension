@@ -1,16 +1,27 @@
-build: $(wildcard **/*) icons
-	dirname=$(shell basename $(PWD)); zip -r \
-	--exclude=.git* --exclude=octocat-shades.png --exclude=screenshot*.png --exclude=*.{coffee,cson} \
-	--exclude=Makefile --exclude=README.md \
-	../$$dirname.zip .
+CSON_FILES = $(wildcard *.cson)
+COFFEE_FILES = $(wildcard *.coffee)
+ICONS=icon128.png icon48.png icon16.png
+ZIP_EXCLUDE= $(CSON_FILES) $(COFFEE_FILES) .git* octocat-shades.png screenshot*.png Makefile README.md
 
-icons: icon128.png icon48.png icon16.png
 
-icon128.png: octocat-shades.png
-	convert octocat-shades.png -resize 128 icon128.png
+JSON_FILES = $(CSON_FILES:.cson=.json)
+JS_FILES = $(COFFEE_FILES:.coffee=.js)
 
-icon48.png: octocat-shades.png
-	convert octocat-shades.png -resize 128 icon48.png
+space :=
+space +=
+ZIP_EXCLUDE_FLAGS = --exclude=$(subst $(space),$(space)--exclude=,$(ZIP_EXCLUDE))
 
-icon16.png: octocat-shades.png
-	convert octocat-shades.png -resize 128 icon16.png
+build: $(wildcard **/*) $(ICONS) $(JSON_FILES) $(JS_FILES)
+	dirname=$(shell basename $(PWD)); zip -r $(ZIP_EXCLUDE_FLAGS) ../$$dirname.zip .
+
+clean:
+	rm -fv $(JSON_FILES) $(JS_FILES) $(ICONS)
+
+%.json : %.cson
+	cson2json $< > $@
+
+%.js : %.coffee
+	coffee -p $< > $@
+
+icon%.png: octocat-shades.png
+	convert octocat-shades.png -resize $* $@
