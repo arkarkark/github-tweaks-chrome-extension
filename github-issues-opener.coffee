@@ -1,17 +1,24 @@
 # Make it so that all links to issues on an issues (or pulls) results page open in a new tab.
-
+# Also make links to not github urls open in a new tab too.
+#
 # inspiration	from: http://stackoverflow.com/questions/12042852
 
 config =
   childList: true
   subtree: true
 
-paths = new RegExp('/(issues|pull)(\\?|$\)')
+paths = new RegExp('/(issues|pull)')
 regex = new RegExp('/(issues|pull)/[0-9]')
+hasNotRegex = new RegExp('^https?')
+notRegex = new RegExp('^https?://[^/]*github.com')
+
+matches = (str, reg) ->
+  str.search(reg) != -1
 
 foundLink = (n) ->
   href = n.getAttribute('href')
-  if href?.search(regex) != -1
+  return unless href
+  if matches(href, regex) || (matches(href, hasNotRegex) && !matches(href, notRegex))
     return if n.getAttribute('target') == '_blank'
     n.setAttribute('target', '_blank')
     n.addEventListener('click', (event) ->
