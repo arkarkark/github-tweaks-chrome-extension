@@ -8,16 +8,25 @@ config =
   subtree: true
 
 paths = new RegExp('/(issues|pull)')
-regex = new RegExp('/(issues|pull)/[0-9]')
+regex = new RegExp('/(issues|pull)/([0-9]+)')
 hasNotRegex = new RegExp('^https?')
 notRegex = new RegExp('^https?://[^/]*github.com')
+
+getIssueId = (url) ->
+  match = url.match(regex)
+  if match && match[2]
+    match[2]
+  else
+    null
 
 matches = (str, reg) ->
   str.search(reg) != -1
 
-foundLink = (n) ->
+foundLink = (n, currentIssueId) ->
   href = n.getAttribute('href')
-  return unless href
+  return unless href && href != '#'
+  return if currentIssueId == getIssueId(href)
+
   if matches(href, regex) || (matches(href, hasNotRegex) && !matches(href, notRegex))
     return if n.getAttribute('target') == '_blank'
     n.setAttribute('target', '_blank')
@@ -27,15 +36,18 @@ foundLink = (n) ->
     )
 
 # Traverse 'rootNode' and its descendants and modify '<a>' tags
-modifyLinks = (rootNode) ->
-  [].slice.call(document.querySelectorAll('a')).forEach((n) -> foundLink(n))
+modifyLinks = (rootNode, currentIssueId) ->
+  [].slice.call(document.querySelectorAll('a')).forEach((n) -> foundLink(n, currentIssueId))
+
+currentIssueId = getIssueId(String(window.location))
 
 observer = new MutationObserver((mutations) ->
   mutations.some((mutation) ->
     if mutation.addedNodes
       if window.location.pathname.search(paths) != -1
-        [].slice.call(mutation.addedNodes).forEach((node) -> modifyLinks(node))
+        [].slice.call(mutation.addedNodes).forEach((node) -> modifyLinks(node, currentIssueId))
   )
 )
+
 
 observer.observe(document.body, config)
