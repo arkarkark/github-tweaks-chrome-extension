@@ -25,15 +25,21 @@ matches = (str, reg) ->
 foundLink = (n, currentIssueId) ->
   href = n.getAttribute('href')
   return unless href && href != '#'
-  return if currentIssueId == getIssueId(href)
+  linkIssueId = getIssueId(href)
+  return if currentIssueId == linkIssueId
 
   if matches(href, regex) || (matches(href, hasNotRegex) && !matches(href, notRegex))
-    return if n.getAttribute('target') == '_blank'
-    n.setAttribute('target', '_blank')
-    n.addEventListener('click', (event) ->
-      window.open(href, '_blank')
+    el = document.createElement('a')
+    el.innerHTML = n.innerHTML
+    el.addEventListener('click', (event) ->
+      console.log(event)
+      if event.button == 1 || (event.button == 0 && event.metaKey)
+        window.open(href, '_blank')
+      else
+        chrome.runtime.sendMessage({message: 'openIssue', issueId: linkIssueId, href: href})
       event.preventDefault()
     )
+    n.parentNode.replaceChild(el, n)
 
 # Traverse 'rootNode' and its descendants and modify '<a>' tags
 modifyLinks = (rootNode, currentIssueId) ->
