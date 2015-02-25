@@ -29,13 +29,20 @@ foundLink = (n, currentIssueId) ->
   return if currentIssueId == linkIssueId
 
   if matches(href, regex) || (matches(href, hasNotRegex) && !matches(href, notRegex))
-    el = document.createElement('a')
+    return if n.getAttribute('data-gio')
+    el = document.createElement(n.tagName)
+    el.classList.add(c) for c in n.classList
     el.innerHTML = n.innerHTML
+    el.href = href
+    el.title = n.title || href
+    el.setAttribute('data-gio', 'y')
     el.addEventListener('click', (event) ->
-      console.log(event)
       if event.button == 1 || (event.button == 0 && event.metaKey)
         window.open(href, '_blank')
       else
+        href = new URI(href)
+        href = href.absoluteTo(String(window.location)) if href.is('relative')
+        href = href.toString()
         chrome.runtime.sendMessage({message: 'openIssue', issueId: linkIssueId, href: href})
       event.preventDefault()
     )

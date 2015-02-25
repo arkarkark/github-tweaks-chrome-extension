@@ -1,0 +1,15 @@
+{
+  "name": "github-tweaks-chrome-extension",
+  "version": "0.0.1",
+  "homepage": "https://github.com/arkarkark/github-tweaks-chrome-extension",
+  "authors": [
+    "Alex W (wtwf.com)"
+  ],
+  "description": "messes around with github to my liking.",
+  "main": "manifest.json",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "uri.js": "~1.14.1"
+  }
+}

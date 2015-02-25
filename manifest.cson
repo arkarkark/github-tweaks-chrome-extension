@@ -1,19 +1,19 @@
 # Use cson2json from cson-cli (npm) to convert this (Emacs does it for me).
 manifest_version: 2
-name: "Github Tweaks."
-version: "0.0.7"
-description: "Make the issues and external links on a github issues page open in a new tab."
+name: 'Github Tweaks.'
+version: '0.0.9'
+description: 'Make the issues and external links on a github issues page open in a new tab.'
 content_scripts: [
-  matches: ["https://github.com/*"]
-  js: ["github-issues-opener.js"]
+  matches: ['https://github.com/*']
+  js: ['github-issues-opener.js', 'bower_components/uri.js/src/URI.js']
 ]
 background:
-  scripts: ["background.js"]
+  scripts: ['background.js']
   # persistent: false
 permissions: [
   'tabs'
 ]
 icons:
-  16: "icon16.png"
-  48: "icon48.png"
-  128: "icon128.png"
+  16: 'icon16.png'
+  48: 'icon48.png'
+  128: 'icon128.png'
