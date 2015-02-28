@@ -62,5 +62,12 @@ observer = new MutationObserver((mutations) ->
   )
 )
 
+updateTitle = ->
+  title = document.title
+  if currentIssueId
+    title = title.replace(new RegExp("( *· *Issue *)?#" + currentIssueId), '')
+    document.title = "#{currentIssueId} · #{title}"
 
 observer.observe(document.body, config)
+
+updateTitle()

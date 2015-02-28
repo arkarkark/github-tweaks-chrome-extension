@@ -27,6 +27,9 @@ clean:
 icon%.png: octocat-shades.png
 	convert octocat-shades.png -resize $* $@
 
-vendor:
+vendor: vendor/URI.js
+
+vendor/URI.js:
+	bower install
 	mkdir -p vendor
 	cp bower_components/uri.js/src/URI.js vendor/
