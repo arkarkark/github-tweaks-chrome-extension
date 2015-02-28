@@ -2,9 +2,9 @@
 manifest_version: 2
 name: 'Github Tweaks.'
 version: '0.1.1'
-description: 'Make the issues and external links on a github issues page open in a new tab.
-              Only have one tab per issue open.
-              Update page title to have issue id first.
+description: 'GitHub issues open in a new tab.
+              One tab per issue.
+              Page title has issue number first.
               '
 content_scripts: [
   matches: ['https://github.com/*']
