@@ -1,0 +1,11 @@
+{
+  "name": "github-tweaks-chrome-extension",
+  "version": "0.0.1",
+  "description": "Chrome extension to fiddle with github issues",
+  "private": true,
+  "engine": "node ^0.10.32",
+  "devDependencies": {
+    "coffee-script": "^1.8.0",
+    "cson-cli": "^1.0.2"
+  }
+}
