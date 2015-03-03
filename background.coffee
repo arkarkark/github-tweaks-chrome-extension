@@ -47,7 +47,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) ->
       issueId,
       (matchingTab) ->
         chrome.tabs.remove(tabId)
-        selectTab(matchingTab, {url: changeInfo.url})
+        selectTab(matchingTab, {url: changeInfo.url}) if tab.active
       null
       {ignoreTabId: tabId}
     )
